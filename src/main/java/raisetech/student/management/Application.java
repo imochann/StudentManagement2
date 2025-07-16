@@ -59,15 +59,5 @@ public class Application {
             return "Student " + name + " not found.";
         }
     }
-
-
-    @DeleteMapping("/students/{name}")
-    public String deleteStudent(@PathVariable String name) {
-        if (students.containsKey(name)) {
-            students.remove(name);
-            return "Student " + name + " deleted successfully!";
-        } else {
-            return "Student " + name + " not found.";
-        }
-    }
 }
+
