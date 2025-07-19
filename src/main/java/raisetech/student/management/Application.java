@@ -31,6 +31,7 @@ public class Application {
     }
 
 
+
     @GetMapping("/students")
     public Map<String, Map<String, String>> getAllStudents() {
         return students;
@@ -55,9 +56,20 @@ public class Application {
         if (students.containsKey(name)) {
             students.put(name, updatedInfo);
             return "Student " + name + " updated successfully!";
+
+
+
+
+
+
+
+   
+
         } else {
             return "Student " + name + " not found.";
         }
     }
-}
+  }
+
+
 
