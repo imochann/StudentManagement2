@@ -31,6 +31,7 @@ public class Application {
     }
 
 
+
     @GetMapping("/students")
     public Map<String, Map<String, String>> getAllStudents() {
         return students;
@@ -55,19 +56,20 @@ public class Application {
         if (students.containsKey(name)) {
             students.put(name, updatedInfo);
             return "Student " + name + " updated successfully!";
+
+
+
+
+
+
+
+   
+
         } else {
             return "Student " + name + " not found.";
         }
     }
+  }
 
 
-    @DeleteMapping("/students/{name}")
-    public String deleteStudent(@PathVariable String name) {
-        if (students.containsKey(name)) {
-            students.remove(name);
-            return "Student " + name + " deleted successfully!";
-        } else {
-            return "Student " + name + " not found.";
-        }
-    }
-}
+
