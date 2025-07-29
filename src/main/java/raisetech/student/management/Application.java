@@ -1,75 +1,46 @@
 package raisetech.student.management;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
 
 @SpringBootApplication
 @RestController
 public class Application {
 
-    private final Map<String, Map<String, String>> students = new ConcurrentHashMap<>();
-
-    public Application() {
-        Map<String, String> kouji = new HashMap<>();
-        kouji.put("age", "37");
-        kouji.put("major", "Computer Science");
-        students.put("Enami Kouji", kouji);
-
-        Map<String, String> hanako = new HashMap<>();
-        hanako.put("age", "20");
-        hanako.put("major", "Literature");
-        students.put("Yamada Hanako", hanako);
-    }
+    @Autowired
+    private StudentRepository repository;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 
-
-
-    @GetMapping("/students")
-    public Map<String, Map<String, String>> getAllStudents() {
-        return students;
+    @GetMapping("/student")
+    public String getStudent(@RequestParam String name) {
+        Student student = repository.searchByName(name);
+        return student.getName() + " " + student.getAge() + "歳";
     }
 
-    @GetMapping("/students/{name}")
-    public Map<String, String> getStudent(@PathVariable String name) {
-        return students.get(name);
+    // 新しく追加するエンドポイント
+    @GetMapping("/students") // 複数の学生を取得するので、エンドポイント名を /students と複数形にするのが一般的です
+    public List<Student> getAllStudents() {
+        return repository.findAll();
     }
 
-    @PostMapping("/students")
-    public String addStudent(@RequestBody Map<String, Map<String, String>> newStudent) {
-        for (Map.Entry<String, Map<String, String>> entry : newStudent.entrySet()) {
-            students.put(entry.getKey(), entry.getValue());
-        }
-        return "Student(s) added successfully!";
+    @PostMapping("/student")
+    public void registerStudent(@RequestParam String name, @RequestParam int age) { // @RequestParam を追加してURLパラメータから値を取得するようにします
+        repository.registerStudent(name, age);
     }
 
-
-    @PutMapping("/students/{name}")
-    public String updateStudent(@PathVariable String name, @RequestBody Map<String, String> updatedInfo) {
-        if (students.containsKey(name)) {
-            students.put(name, updatedInfo);
-            return "Student " + name + " updated successfully!";
-
-
-
-
-
-
-
-   
-
-        } else {
-            return "Student " + name + " not found.";
-        }
+    @PatchMapping("/student")
+    public void updateStudentName(@RequestParam String name, @RequestParam int age) { // @RequestParam を追加
+        repository.updateStudent(name, age);
     }
-  }
 
-
-
+    @DeleteMapping("/student")
+    public void deleteStudent(@RequestParam String name) { // @RequestParam を追加
+        repository.deleteStudent(name);
+    }
+}
