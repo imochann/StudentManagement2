@@ -12,6 +12,7 @@ import raisetech.student.management.domain.StudentDetail;
 import raisetech.student.management.service.StudentService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,15 +38,19 @@ public class StudentController {
         return "studentList";
     }
 
-
-    @GetMapping("/studentsCourseList")
-    public List<StudentsCourses> getStudentCourseList() {
-        return service.searchStudentsCourseList();
+    @GetMapping("/student/{id}")
+    public String getStudent(@PathVariable String id, Model model) {
+        StudentDetail studentDetail = service.searchStudent(id);
+        model.addAttribute("studentDetail",  studentDetail);
+        return "updateStudent";
     }
+
 
     @GetMapping("/newStudent")
     public String newStudent(Model model) {
-        model.addAttribute("studentDetail", new StudentDetail());
+        StudentDetail studentDetail = new StudentDetail();
+        studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourses()));
+        model.addAttribute("studentDetail",  studentDetail);
         return "registerStudent";
     }
 
@@ -58,4 +63,17 @@ public class StudentController {
         service.registerStudent(studentDetail);
         return "redirect:/studentList";
     }
+
+
+
+
+    @PostMapping("/updateStudent")
+    public String updateStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
+        if(result.hasErrors()){
+            return "updateStudent";
+        }
+        service.updateStudent(studentDetail);
+        return "redirect:/studentList";
+    }
+
 }
