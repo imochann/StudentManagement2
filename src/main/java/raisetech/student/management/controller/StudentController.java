@@ -32,9 +32,7 @@ public class StudentController {
     public String getStudentList(Model model) {
         List<Student> students = service.searchStudentList();
         List<StudentsCourses> studentsCourses = service.searchStudentsCourseList();
-
         model.addAttribute("studentList", converter.convertStudentDetails(students, studentsCourses));
-
         return "studentList";
     }
 
@@ -63,8 +61,6 @@ public class StudentController {
         service.registerStudent(studentDetail);
         return "redirect:/studentList";
     }
-
-
 
 
     @PostMapping("/updateStudent")

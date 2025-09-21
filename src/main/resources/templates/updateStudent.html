@@ -3,6 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>受講生詳細</title>
+    <style>
+        body{
+        background-color:#f5f5f5;
+        color:#674598;
+        }
+
+        h1{
+        margin-bottom:30px;
+        color:black;
+        text-align:center;
+        }
+
+        div{
+        margin-bottom:10px;
+        text-align:center;
+
+
+        }
+    </style>
 </head>
 <body>
 <h1>受講生詳細</h1>
@@ -44,16 +63,26 @@
         <label for="remark">備考</label>
         <input type="text" id="remark" th:field="*{student.remark}" />
     </div>
+    <div>
+        <label for="isDeleted">キャンセル</label>
+        <input type="checkbox" id="isDeleted" th:field="*{student.deleted}" />
+    </div>
     <div th:each="course, stat : *{studentsCourses}">
-        <label for="id" th:for="studentCourses.__${stat.index}__courseName">受講コース名ID: </label>
-        <input type="text" id="id" th:id="studentCourses.__${stat.index}__id"
+        <label for="studentCourseId"
+               th:for="studentCourse.__${stat.index}__Id">受講コースID: </label>
+        <input type="text" id="studentCourseId" th:id="studentCourse.__${stat.index}__id"
                th:field="*{studentsCourses[__${stat.index}__].id}" />
     </div>
     <div th:each="course, stat : *{studentsCourses}">
-        <label for="courseName" th:for="studentCourses.__${stat.index}__courseName">受講コース名: </label>
-        <input type="text" id="courseName" th:id="studentCourses.__${stat.index}__courseName"
+        <label for="courseName"
+               th:for="studentCourse.__${stat.index}__courseName">受講コース名: </label>
+        <input type="text" id="courseName" th:id="studentCourse.__${stat.index}__courseName"
                th:field="*{studentsCourses[__${stat.index}__].courseName}" />
     </div>
+<!--    <div>-->
+<!--        <label for="deleted">登録をキャンセルしますか？</label>-->
+<!--        <input type="checkbox" id="deleted" th:field="*{student.deleted}">-->
+<!--    </div>-->
     <div>
         <button type="submit">更新</button>
     </div>
